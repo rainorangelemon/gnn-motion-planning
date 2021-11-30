@@ -1,0 +1,15 @@
+*/.ipynb_checkpoints
+.ipynb_checkpoints/*
+*.p
+*.png
+*.pdf
+maze_files/mazes_100000.npz
+data/*
+runs/*
+.DS_Store
+*.pyc
+.idea/*
+__pycache__/*
+*/__pycache__/*
+*.pt
+*.hdf5
