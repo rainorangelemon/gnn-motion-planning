@@ -2,7 +2,7 @@
 
 [[project page](https://rainorangelemon.github.io/NeurIPS2021/)] [[paper](https://rainorangelemon.github.io/NeurIPS2021/paper.pdf)]
 
-![framework](./data/images/framework.pdf)
+![framework](./data/images/framework.png)
 ![envs](./data/images/envs.png)
 
 ## Abstract
