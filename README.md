@@ -27,3 +27,12 @@ Please find the training and test sets in https://drive.google.com/drive/folders
 See [main.ipynb](./main.ipynb) for further details.
 
 To evaluate all the methods, see [eval_all.py](./eval_all.py)
+
+## Acknowledgement
+
+We sincerely thank the following GitHub repos:
+[Learning to Plan in High Dimensions via Neural Exploration-Exploitation Trees](https://github.com/NeurEXT/NEXT-learning-to-plan)
+[Gated Path Planning Networks](https://github.com/RLAgent/gated-path-planning-networks)
+[PyBullet Planning](https://github.com/caelan/pybullet-planning)
+[PyBullet](https://github.com/bulletphysics/bullet3)
+[Path Planning](https://github.com/zhm-real/PathPlanning)
