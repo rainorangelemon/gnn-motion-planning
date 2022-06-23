@@ -9,6 +9,7 @@ from time import time
 from smoother import model_smooth, proposed_path_smoother, joint_smoother, interpolate_path
 # from model_smoother2 import ModelSmoother
 from str2name import str2name
+from environment.timer import Timer
 
 loop = 5
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -28,8 +29,8 @@ def obs_data(env, free, collided):
     #     collided.append([0. for _ in range(env.config_dim)])
 
     data = DotDict({
-        'free': torch.FloatTensor(free).to(device),
-        'collided': torch.FloatTensor(collided)[:len(free)].to(device),
+        'free': torch.FloatTensor(np.array(free)).to(device),
+        'collided': torch.FloatTensor(np.array(collided))[:len(free)].to(device),
         'obstacles': torch.FloatTensor(env.obstacles).to(device),
     })
     return data
@@ -148,8 +149,8 @@ def eval_gnn(str, seed, env, indexes, model=None, model_s=None, use_tqdm=False, 
 
 def create_data(free, collided, env, k):
     data = Data(goal=torch.FloatTensor(env.goal_state))
-    data.v = torch.cat((torch.FloatTensor(free),
-                        torch.FloatTensor(collided)), dim=0)
+    data.v = torch.cat((torch.FloatTensor(np.array(free)),
+                        torch.FloatTensor(np.array(collided))), dim=0)
     # create labels
     data.labels = torch.zeros(len(data.v), 3)
     data.labels[:len(free), 0] = 1
@@ -166,9 +167,11 @@ def create_data(free, collided, env, k):
 
 @torch.no_grad()
 def explore(env, model, model_s, smooth=True, batch=500, t_max=1000, k=30, smoother='model', loop=5):
+    
     c0 = env.collision_check_count
     t0 = time()
     forward = 0
+    
     success = False
     path, smooth_path = [], []
     n_batch = batch
@@ -176,7 +179,7 @@ def explore(env, model, model_s, smooth=True, batch=500, t_max=1000, k=30, smoot
     free, collided = env.sample_n_points(n_batch, need_negative=True)
     collided = collided[:len(free)]
     free = [env.init_state] + [env.goal_state] + list(free)
-
+    
     explored = [0]
     explored_edges = [[0, 0]]
     costs = {0: 0.}
@@ -216,7 +219,6 @@ def explore(env, model, model_s, smooth=True, batch=500, t_max=1000, k=30, smoot
 
                 policy[:, end_b] = 0
                 if env.in_goal_region(to_np(data.v[end_b])):
-                    print(env.collision_check_count - c0)
                     success = True
                     cost = costs[end_b]
                     path = [end_b]

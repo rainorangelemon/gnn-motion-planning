@@ -8,6 +8,7 @@ import torch
 from torch_geometric.utils import add_self_loops
 from algorithm.dijkstra import dijkstra
 from collections import defaultdict
+from environment.timer import Timer
 
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -56,8 +57,8 @@ def obs_data(env, free, collided):
     free = free[:500]
     collided = collided[:500] 
     data = DotDict({
-        'free': torch.FloatTensor(free).to(device),
-        'collided': torch.FloatTensor(collided).to(device),
+        'free': torch.FloatTensor(np.array(free)).to(device),
+        'collided': torch.FloatTensor(np.array(collided)).to(device),
         'obstacles': torch.FloatTensor(env.obstacles).to(device),
     })
     return data
@@ -229,17 +230,17 @@ def interpolate_path(env, path, eps=None):
     return new_path
     
 
-def model_smooth(model, free, collided, old_path, env, iter=5):
+def model_smooth(model, free, collided, old_path, env, iter=5): 
+    
     for iter_i in range(iter):
         data = obs_data(env, free, collided)
-        data.path = torch.FloatTensor(old_path).to(device)
+        data.path = torch.FloatTensor(np.array(old_path)).to(device)
         data.edge_index = torch.cat((torch.arange(1, len(old_path)).reshape(1, -1),
                                      torch.arange(0, len(old_path) - 1).reshape(1, -1)), dim=0)
         data.edge_index = torch.cat((data.edge_index, data.edge_index.flip(0)), dim=-1)
         data.edge_index, _ = add_self_loops(data.edge_index, num_nodes=len(data.path))
         data.edge_index = data.edge_index.to(device)
-
-        new_path = model(**data, loop=1).data.cpu().numpy()
+        new_path = model(**data, loop=1).data.cpu().numpy()  
         old_path = proposed_path_smootherv2(old_path, new_path, env)
     
     return old_path

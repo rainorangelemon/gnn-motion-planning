@@ -1,6 +1,6 @@
 from eval_gnn import eval_gnn
 from eval_next import eval_next
-from eval_bit import eval_bit
+from eval_bit import eval_bit, eval_lazysp
 from eval_rrt import eval_rrt
 import numpy as np
 from environment import MazeEnv, KukaEnv, Kuka2Env
@@ -17,25 +17,18 @@ envs = [
     Kuka2Env()
     ]
 indexeses = [np.arange(1000), np.arange(1000), np.arange(1000), np.arange(2000, 3000), np.arange(2000, 3000), np.arange(2000, 3000), np.arange(2000, 3000)]
-seeds = [1234, 2341, 3412, 4123]
-methods = [eval_gnn, eval_next, eval_bit, eval_rrt]
-method_names = ['GNN', 'NEXT', 'BIT*', 'RRT*']
+seeds = [1234]#, 2341, 3412, 4123]
+methods = [eval_gnn, eval_next, eval_bit, eval_rrt, eval_lazysp]
+method_names = ['GNN', 'NEXT', 'BIT*', 'RRT*', 'LazySP']
 result_total = {}
-keep = False
-keep_point = ('Maze_2D_Easy', 'GNN', '1234')
 
 
 for env_name, env, indexes in zip(env_names, envs, indexeses):
     for method_name, method in zip(method_names, methods):
         results = []
         for seed in seeds:
-            if not keep:
-                if (env_name, method_name, str(seed)) == keep_point:
-                    keep = True
-                else:
-                    continue
             print(env_name, method_name, seed)
-            result = method(env.config_dim, seed, env, indexes, use_tqdm=True)
+            result = method(str=str(env), seed=seed, env=env, indexes=indexes, use_tqdm=True)
             results.append(result)
             result_total[env_name, method_name, str(seed)] = result
 

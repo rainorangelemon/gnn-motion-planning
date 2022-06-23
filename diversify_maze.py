@@ -36,15 +36,18 @@ train_mazes = mazes.f.arr_0
 goal_mazes = mazes.f.arr_1
 
 
-def find_mazes(maze_num, threshold):
+def find_mazes(maze_num, density, dist2goal_threshold=1):
 
     maps = []
     goal_states = []
     init_states = []
 
-    for index in tqdm(range(len(train_mazes))): # len(train_mazes)
+    
+    pbar = tqdm(range(100*len(train_mazes)))
+    for index in pbar: # len(train_mazes)
+        pbar.set_description("len of new data: %d" % len(maps))
         env = MazeEnv(dim=2)
-        env.map = 1-train_mazes[index, :]
+        env.map = 1-train_mazes[index%len(train_mazes), :]
 
         free_grids = np.where(env.map==0)
         # init_index = np.random.choice(len(free_grids[0]))
@@ -59,7 +62,7 @@ def find_mazes(maze_num, threshold):
         if (env.init_state == env.goal_state).all():
             continue
 
-        if threshold[0] <= (225-len(free_grids[0])) <= threshold[1] and (np.linalg.norm(env.init_state-env.goal_state)>=1.):
+        if density[0] <= (225-len(free_grids[0])) <= density[1] and (np.linalg.norm(env.init_state-env.goal_state)>=dist2goal_threshold):
 
             maps.append(env.map)
             goal_states.append(env.goal_state)
@@ -68,6 +71,7 @@ def find_mazes(maze_num, threshold):
             if len(maps) >= maze_num:
                 return maps, init_states, goal_states
 
+    return maps, init_states, goal_states
 
 # costs = find_mazes(0, [1, 2])
 # print(np.min([cost[0] for cost in costs]))
@@ -91,6 +95,8 @@ def find_mazes(maze_num, threshold):
 # np.savez('maze_files/mazes_normal.npz', maps=maps, goal_states=goal_states, init_states=init_states)
 # print(len(maps))
 
-maps, init_states, goal_states = find_mazes(4000, [57, INFINITY])
-np.savez('maze_files/mazes_4000.npz', maps=maps, goal_states=goal_states, init_states=init_states)
-print(len(maps))
+
+if __name__ == '__main__':
+    maps, init_states, goal_states = find_mazes(4000, [57, INFINITY])
+    np.savez('maze_files/mazes_4000.npz', maps=maps, goal_states=goal_states, init_states=init_states)
+    print(len(maps))

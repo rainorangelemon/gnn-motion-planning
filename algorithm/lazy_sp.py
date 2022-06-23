@@ -9,19 +9,25 @@ from shapely import affinity
 import itertools
 from time import time
 from environment.timer import Timer
-from maze_prm import dijkstra
+from algorithm.dijkstra import dijkstra
 from torch_geometric.nn import knn_graph
 import torch
 from torch_sparse import coalesce
 from collections import defaultdict
+from environment.timer import Timer
 
 INF = float("inf")
 
 
 class LazySP:
-    def __init__(self, environment, batch_size=100, T=1000):
+    def __init__(self, environment, batch_size=100, T=1000, k=10, timer=None):
 
         self.env = environment
+        self.k0 = k
+        if timer is None:
+            self.timer = Timer()
+        else:
+            self.timer = timer
 
         start, goal, bounds = tuple(environment.init_state), tuple(environment.goal_state), environment.bound
 
@@ -115,6 +121,7 @@ class LazySP:
         return path_length
     
     def construct_graph(self, k, points, env):
+        self.timer.start()
         points = np.array(points)
         edge_index = knn_graph(torch.FloatTensor(points), k=k, loop=True)
         edge_index = torch.cat((edge_index, edge_index.flip(0)), dim=-1)
@@ -126,6 +133,7 @@ class LazySP:
             if (edge[0], edge[1]) not in self.invalid_edges:
                 edge_cost[edge[1]].append(np.linalg.norm(points[edge[1]]-points[edge[0]]))
                 neighbors[edge[1]].append(edge[0])
+        self.timer.finish(self.timer.NN)
         return edge_cost, neighbors, edge_index
     
     def remove_neighbor(self, edge_cost, neighbors, n1, n2):
@@ -144,16 +152,17 @@ class LazySP:
 
         while self.T < self.T_max:
             self.samples.extend(self.informed_sample(self.batch_size))
-            print(self.env.collision_check_count-collision_checks)
             self.T += self.batch_size
             
             q = len(self.samples)
             self.r = self.radius_init() * ((math.log(q) / q) ** (1.0 / self.dimension))
-            self.k = int(np.ceil(10*np.log(q)/np.log(100)))
+            self.k = int(np.ceil(self.k0*np.log(q)/np.log(100)))
             edge_cost, neighbors, edge_index = self.construct_graph(self.k, self.samples, self.env)
 
             while True:  # continue until Dijkstra finds that the graph is infeasible
+                self.timer.start()
                 dist, prev = dijkstra(list(range(len(self.samples))), neighbors, edge_cost, 0)
+                self.timer.finish(Timer.SHORTEST_PATH)
                 if dist[1] != float('inf'):
                     feasible = True
                     path = self.get_path(prev, 1, 0)

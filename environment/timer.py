@@ -13,6 +13,8 @@ class Timer:
     NN = 6
     EXPAND = 7
     HEAP = 8
+    GPU = 9
+    SHORTEST_PATH = 10
     
     def __init__(self):
         self.log = []

@@ -94,9 +94,10 @@ def policy_data(edge_cost, dist, prev, policy, start, end, step):
 
 
 def train_explorer(epoch, data_path, model, model_path, env, 
-                   use_obstacle=True, iter=20, loop=10):
+                   use_obstacle=True, use_heuristic=True, iter=20, loop=10):
 
     model.use_obstacle = use_obstacle
+    model.use_heuristic = use_heuristic
     writer = SummaryWriter()
     INFINITY = float('inf')
 

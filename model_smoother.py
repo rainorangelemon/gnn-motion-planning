@@ -10,8 +10,6 @@ from torch_geometric.nn.conv import MessagePassing
 from torch.nn import BatchNorm1d
 from torch.autograd import Variable
 from torch.distributions.multivariate_normal import MultivariateNormal
-from hyperspherical_vae.distributions.von_mises_fisher import VonMisesFisher
-from hyperspherical_vae.distributions.hyperspherical_uniform import HypersphericalUniform
 from torch_geometric.nn import knn_graph, GraphConv
 from nets import GATConv, EdgePooling, ASAPooling, SAModule, FPModule, MLP
 from torch import nn

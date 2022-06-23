@@ -1,6 +1,6 @@
 from model import EncoderProcessDecoder
 from model_smoother import ModelSmoother
-import model_smoother2
+# import model_smoother2
 import torch
 from environment import MazeEnv, KukaEnv, Kuka2Env, SnakeEnv, UR5Env
 import numpy as np

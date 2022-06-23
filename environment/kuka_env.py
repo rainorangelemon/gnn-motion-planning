@@ -198,7 +198,7 @@ class KukaEnv:
         for i in range(n):
             while True:
                 sample = self.uniform_sample()
-                if self._point_in_free_space(sample):
+                if self._state_fp(sample):
                     samples.append(sample)
                     break
                 elif need_negative:

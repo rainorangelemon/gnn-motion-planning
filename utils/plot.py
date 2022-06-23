@@ -130,7 +130,7 @@ def plot_edges(states, edges, problem, index=0,
             draw_edge(node, parent, 'green', dim=dim)
         else:
             if edge_classes[index]:
-                draw_edge(node, parent, 'blue', dim=dim)
+                draw_edge(node, parent, 'red', dim=dim)
             else:
                 draw_edge(node, parent, 'green', dim=dim)
 
