@@ -2,12 +2,16 @@
 
 [[project page](https://rainorangelemon.github.io/NeurIPS2021/)] [[paper](https://rainorangelemon.github.io/NeurIPS2021/paper.pdf)]
 
-![framework](./data/images/framework.png)
-![envs](./data/images/envs.png)
-
 ## Abstract
 
+![framework](./data/images/framework.png)
+
 Sampling-based motion planning is a popular approach in robotics for finding paths in continuous configuration spaces. Checking collision with obstacles is the major computational bottleneck in this process. We propose new learning-based methods for reducing collision checking to accelerate motion planning by training graph neural networks (GNNs) that perform path exploration and path smoothing. Given random geometric graphs (RGGs) generated from batch sampling, the path exploration component iteratively predicts collision-free edges to prioritize their exploration. The path smoothing component then optimizes paths obtained from the exploration stage. The methods benefit from the ability of GNNs of capturing geometric patterns from RGGs through batch sampling and generalize better to unseen environments. Experimental results show that the learned components can significantly reduce collision checking and improve overall planning efficiency in challenging high-dimensional motion planning tasks.
+
+## Environments
+
+We provide 6 diverse environments from 2D mazes to 14D dual KUKA iiwa arms. We use PyBullet to perform collision detection and visualization.
+![envs](./data/images/envs.png)
 
 ## Installation
 ```bash
