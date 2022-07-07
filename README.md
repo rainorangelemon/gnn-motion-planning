@@ -34,6 +34,19 @@ Additionally, this repo also covers other popular approaches, including [PRM wit
 
 To evaluate all the methods, see [eval_all.py](./eval_all.py)
 
+## Citation
+
+We would appreciate it if you found this repo helpful. Feel free to cite:
+
+```
+@inproceedings{chenning2021collision,
+    title={Reducing Collision Checking for Sampling-Based Motion Planning Using Graph Neural Networks},
+    author={Yu, Chenning and Gao, Sicun},
+    booktitle={Proceedings of the 35rd International Conference on Neural Information Processing Systems},
+    year={2021}
+}
+```
+
 ## Acknowledgement
 
 We sincerely thank the following GitHub repos:
