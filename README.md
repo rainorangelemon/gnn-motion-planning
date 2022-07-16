@@ -1,6 +1,6 @@
 # GNN-Motion-Planning
 
-[[project page](https://rainorangelemon.github.io/NeurIPS2021/)] [[paper](https://rainorangelemon.github.io/NeurIPS2021/paper.pdf)]
+[paper](https://rainorangelemon.github.io/NeurIPS2021/paper.pdf) | [website](https://rainorangelemon.github.io/NeurIPS2021/)
 
 ## Abstract
 
