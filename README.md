@@ -30,7 +30,12 @@ Please find the training and test sets in https://drive.google.com/drive/folders
 ## Usage
 See [main.ipynb](./main.ipynb) for further details.
 
-Additionally, this repo also covers other popular approaches, including [PRM with Dijkstra](./algorithm/dijkstra.py), [RRT*](./algorithm/tsa.py), [BIT*](./algorithm/bit_star.py), [LazySP](./algorithm/lazy_sp.py), and [NEXT](./algorithm/tsa.py).
+Additionally, this repo also covers other popular approaches, including 
+- [PRM with Dijkstra](./algorithm/dijkstra.py)
+- [RRT*](./algorithm/tsa.py)
+- [BIT*](./algorithm/bit_star.py)
+- [LazySP](./algorithm/lazy_sp.py)
+- [NEXT](./algorithm/tsa.py)
 
 To evaluate all the methods, see [eval_all.py](./eval_all.py)
 
