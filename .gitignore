@@ -4,12 +4,12 @@
 *.png
 *.pdf
 maze_files/mazes_100000.npz
-data/*
+data/weights_old
+data/results
 runs/*
 .DS_Store
 *.pyc
 .idea/*
 __pycache__/*
 */__pycache__/*
-*.pt
 *.hdf5
