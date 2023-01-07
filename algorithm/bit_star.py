@@ -132,12 +132,7 @@ class BITStar:
         return tuple(point)
 
     def is_point_free(self, point):
-        if self.dimension == 2:
-            result = self.env._state_fp(np.array(point))
-        elif self.dimension == 3:
-            result = self.env._state_fp(np.array(point))
-        else:
-            result = self.env._state_fp(np.array(point))
+        result = self.env._state_fp(np.array(point))
         if result:
             self.n_free_points += 1
         else:
