@@ -206,7 +206,7 @@ def proposed_path_smootherv2(old_path, new_path, env):
                 next_path[i] = new_n
             else:
                 next_path[i] = env.interpolate(old_n, new_n, env.RRT_EPS / dist)
-            if not env._edge_fp(next_path[i-1], next_path[i]):
+            if not (env._edge_fp(next_path[i-1], next_path[i]) and env._edge_fp(next_path[i+1], next_path[i])):
                 next_path[i] = path[i]
             else:
                 diff += np.linalg.norm(next_path[i]-new_n)
